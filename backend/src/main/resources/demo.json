@@ -1,0 +1,36 @@
+[
+  {
+    "op": "create",
+    "as": "supplier",
+    "module": "suppliers",
+    "data": {
+      "name": "演示软件供应商",
+      "taxId": "913100000000000001",
+      "baselineAmount": 1000
+    }
+  },
+  {
+    "op": "create",
+    "as": "expense",
+    "module": "expenses",
+    "data": {
+      "supplier": "$supplier.id",
+      "invoiceNo": "DEMO-FP-01",
+      "spendDate": "$today",
+      "amount": 800,
+      "description": "软件许可采购"
+    }
+  },
+  {
+    "op": "action",
+    "target": "expense",
+    "action": "analyze",
+    "data": {}
+  },
+  {
+    "op": "action",
+    "target": "expense",
+    "action": "post",
+    "data": {}
+  }
+]
