@@ -1,0 +1,129 @@
+[
+  {
+    "op": "create",
+    "as": "supplier",
+    "module": "suppliers",
+    "data": {
+      "name": "华东软件服务商",
+      "taxId": "913100001000000001",
+      "baselineAmount": 100
+    }
+  },
+  {
+    "op": "create",
+    "as": "expense1",
+    "module": "expenses",
+    "data": {
+      "supplier": "$supplier.id",
+      "invoiceNo": "FP-100",
+      "spendDate": "$today",
+      "amount": 50,
+      "description": "软件许可续费"
+    }
+  },
+  {
+    "op": "action",
+    "target": "expense1",
+    "action": "analyze",
+    "data": {}
+  },
+  {
+    "op": "check",
+    "target": "expense1",
+    "expect": {
+      "state": "CLEARED",
+      "data.category": "SOFTWARE",
+      "data.riskScore": 0
+    }
+  },
+  {
+    "op": "action",
+    "target": "expense1",
+    "action": "post",
+    "data": {}
+  },
+  {
+    "op": "create",
+    "as": "expense2",
+    "module": "expenses",
+    "data": {
+      "supplier": "$supplier.id",
+      "invoiceNo": "FP-100",
+      "spendDate": "$today",
+      "amount": 250,
+      "description": "软件许可追加采购"
+    }
+  },
+  {
+    "op": "action",
+    "target": "expense2",
+    "action": "analyze",
+    "data": {}
+  },
+  {
+    "op": "check",
+    "target": "expense2",
+    "expect": {
+      "state": "REVIEW",
+      "data.category": "SOFTWARE",
+      "data.riskScore": 100
+    }
+  },
+  {
+    "op": "action",
+    "target": "expense2",
+    "action": "post",
+    "data": {},
+    "error": 409
+  },
+  {
+    "op": "action",
+    "target": "expense2",
+    "action": "approve",
+    "data": {},
+    "role": "reviewer"
+  },
+  {
+    "op": "action",
+    "target": "expense2",
+    "action": "post",
+    "data": {}
+  },
+  {
+    "op": "count",
+    "module": "analyses",
+    "count": 2
+  },
+  {
+    "op": "metric",
+    "expect": {
+      "待复核异常": 0,
+      "已入账笔数": 2,
+      "已入账金额": 300
+    }
+  },
+  {
+    "op": "create",
+    "as": "futureExpense",
+    "module": "expenses",
+    "data": {
+      "supplier": "$supplier.id",
+      "invoiceNo": "FP-FUTURE",
+      "spendDate": "$today+2",
+      "amount": 10,
+      "description": "办公采购"
+    },
+    "error": 409
+  },
+  {
+    "op": "create",
+    "as": "duplicateSupplier",
+    "module": "suppliers",
+    "data": {
+      "name": "另一供应商",
+      "taxId": "913100001000000001",
+      "baselineAmount": 100
+    },
+    "error": 409
+  }
+]

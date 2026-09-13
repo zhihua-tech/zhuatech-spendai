@@ -1,0 +1,177 @@
+{
+  "slug": "spendai",
+  "name": "知华采购支出分析",
+  "subtitle": "供应商、支出自动分类、重复凭证识别与异常复核",
+  "accent": "#536b54",
+  "modules": [
+    {
+      "key": "suppliers",
+      "label": "供应商",
+      "description": "供应商身份及参考支出基线",
+      "initial": "ACTIVE",
+      "editable": true,
+      "creatable": true,
+      "fields": [
+        {
+          "key": "name",
+          "label": "供应商名称",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "taxId",
+          "label": "统一社会信用代码",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "baselineAmount",
+          "label": "常规单笔金额",
+          "type": "money",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": "0.01",
+          "max": null
+        }
+      ],
+      "actions": []
+    },
+    {
+      "key": "expenses",
+      "label": "采购支出",
+      "description": "登记票据、执行本地分类和风险识别",
+      "initial": "NEW",
+      "editable": true,
+      "creatable": true,
+      "fields": [
+        {
+          "key": "supplier",
+          "label": "供应商",
+          "type": "ref",
+          "required": true,
+          "ref": "suppliers",
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "invoiceNo",
+          "label": "票据号",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "spendDate",
+          "label": "支出日期",
+          "type": "date",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        },
+        {
+          "key": "amount",
+          "label": "金额",
+          "type": "money",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": "0.01",
+          "max": null
+        },
+        {
+          "key": "description",
+          "label": "采购说明",
+          "type": "text",
+          "required": true,
+          "ref": null,
+          "options": [],
+          "min": null,
+          "max": null
+        }
+      ],
+      "actions": [
+        {
+          "key": "analyze",
+          "label": "分析支出",
+          "from": [
+            "NEW"
+          ],
+          "to": "CLEARED",
+          "role": "OPERATOR",
+          "separate": false,
+          "fields": []
+        },
+        {
+          "key": "approve",
+          "label": "审核通过",
+          "from": [
+            "REVIEW"
+          ],
+          "to": "APPROVED",
+          "role": "REVIEWER",
+          "separate": true,
+          "fields": []
+        },
+        {
+          "key": "reject",
+          "label": "审核驳回",
+          "from": [
+            "REVIEW"
+          ],
+          "to": "REJECTED",
+          "role": "REVIEWER",
+          "separate": true,
+          "fields": [
+            {
+              "key": "reason",
+              "label": "驳回原因",
+              "type": "text",
+              "required": true,
+              "ref": null,
+              "options": [],
+              "min": null,
+              "max": null
+            }
+          ]
+        },
+        {
+          "key": "post",
+          "label": "确认入账",
+          "from": [
+            "CLEARED",
+            "APPROVED"
+          ],
+          "to": "POSTED",
+          "role": "OPERATOR",
+          "separate": false,
+          "fields": []
+        }
+      ]
+    },
+    {
+      "key": "analyses",
+      "label": "分析流水",
+      "description": "保存分类、风险分数、触发依据和规则版本",
+      "initial": "RECORDED",
+      "editable": false,
+      "creatable": false,
+      "fields": [],
+      "actions": []
+    }
+  ]
+}
