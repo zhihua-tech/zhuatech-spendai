@@ -6,12 +6,28 @@ import java.math.*;
 import static cn.zhuatech.spendai.Model.*;
 import static cn.zhuatech.spendai.Engine.*;
 
-/** 支出分析扩展点；本地规则版可独立完成分类和异常识别。 */
+/**
+ * 支出分析扩展点；本地规则版可独立完成分类和异常识别。
+ *
+ * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+ */
 public interface InsightProvider {
+ /**
+  * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+  */
  record Insight(String category,int riskScore,List<String> reasons){}
+ /**
+  * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+  */
  Insight analyze(Row expense,Row supplier,List<Row> existing);
 }
+/**
+ * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+ */
 @Component class LocalInsightProvider implements InsightProvider {
+ /**
+  * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+  */
  public Insight analyze(Row expense,Row supplier,List<Row> existing){
   String description=txt(expense.data(),"description").toLowerCase(Locale.ROOT);
   String category=description.matches(".*(软件|许可|云|服务器|saas).*")?"SOFTWARE":description.matches(".*(差旅|机票|酒店|交通).*")?"TRAVEL":description.matches(".*(办公|文具|耗材).*")?"OFFICE":"OTHER";
