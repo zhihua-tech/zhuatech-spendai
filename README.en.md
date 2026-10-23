@@ -1,5 +1,11 @@
 [简体中文](README.md) | **English**
 
+## 2026-10-23: Supplier spend concentration analysis
+
+This update implements **Supplier spend concentration analysis** on the backend, with structured input, explicit validation, evidence or exception details, and a responsive utility page at `/practical.html`. Results are computed from submitted data, not fixed demo responses.
+
+The endpoint validates the existing database-backed login session. It does not trust caller-supplied roles or bypass session revocation. Use `POST /api/practical/supplier-spend-concentration`. No external model invocation or business posting occurs. See [algorithm, sample, boundaries and test commands](docs/AI_MULTIMODAL_UPGRADE_20261023.md).
+
 # ZhuaTech Spendai
 
 > A source-available enterprise project by [ZhuaTech](https://www.zhuatech.cn/) for enterprise finance, planning, settlement, and risk control.
